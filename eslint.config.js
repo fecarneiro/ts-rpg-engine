@@ -10,7 +10,7 @@ export default defineConfig(
   prettier,
   // Aplica type-aware linting nos pacotes do monorepo
   {
-    files: ["packages/**/*.ts"],
+    files: ["packages/*/src/**/*.ts"],
     languageOptions: {
       parserOptions: {
         projectService: true,

@@ -3,8 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
-    "noEmit": true,
-    "composite": true
+    "noEmit": true
   },
   "include": ["src/**/*.ts", "vite.config.ts"]
 }
