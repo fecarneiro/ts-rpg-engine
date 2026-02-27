@@ -19,7 +19,7 @@ export function startGame(parent: string): Phaser.Game {
       default: "arcade",
       arcade: { debug: false },
     },
-    scene: [BootScene, PreloadScene, WorldScene],
+    scene: [BootScene, PreloadScene, WorldScene], // Scene pipeline
   });
 }
 
