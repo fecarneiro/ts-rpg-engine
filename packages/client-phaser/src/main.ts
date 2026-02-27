@@ -1,4 +1,4 @@
-import { BootScene } from "@client/game/scenes/BootScene";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "@client/game/config/gameConfig";
 import { PreloadScene } from "@client/game/scenes/PreloadScene";
 import { WorldScene } from "@client/game/scenes/WorldScene";
 import Phaser from "phaser";
@@ -7,8 +7,8 @@ export function startGame(parent: string): Phaser.Game {
   return new Phaser.Game({
     type: Phaser.AUTO,
     parent,
-    width: 800,
-    height: 600,
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
     backgroundColor: "#1d1d1d",
     pixelArt: true,
     scale: {
@@ -19,7 +19,7 @@ export function startGame(parent: string): Phaser.Game {
       default: "arcade",
       arcade: { debug: false },
     },
-    scene: [BootScene, PreloadScene, WorldScene], // Scene pipeline
+    scene: [PreloadScene, WorldScene],
   });
 }
 
