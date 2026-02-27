@@ -1,8 +1,7 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
-    "rootDir": "."
+    "noEmit": true
   },
-  "include": ["src/**/*", "eslint.config.js"]
+  "include": ["packages/**/*.ts", "*.config.ts", "*.config.js"]
 }

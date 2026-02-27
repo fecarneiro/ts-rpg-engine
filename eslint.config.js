@@ -4,13 +4,13 @@ import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 
 export default defineConfig(
-  { ignores: ["dist/", "node_modules/", "coverage/"] },
+  { ignores: ["dist/", "node_modules/", "coverage/", "packages/*/dist/"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   prettier,
-  // Apenas arquivos em src/ usam type-aware linting
+  // Aplica type-aware linting nos pacotes do monorepo
   {
-    files: ["src/**/*.ts"],
+    files: ["packages/**/*.ts"],
     languageOptions: {
       parserOptions: {
         projectService: true,

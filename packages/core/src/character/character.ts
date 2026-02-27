@@ -2,7 +2,7 @@ import {
   calculateSecondaryAttributes,
   type PrimaryAttributes,
   type SecondaryAttributes,
-} from "@/core/attributes";
+} from "../attributes";
 
 export type CharacterId = string;
 
