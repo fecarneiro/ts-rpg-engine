@@ -1,41 +1,26 @@
+import { BootScene } from "@client/game/scenes/BootScene";
+import { PreloadScene } from "@client/game/scenes/PreloadScene";
+import { WorldScene } from "@client/game/scenes/WorldScene";
 import Phaser from "phaser";
-import { Character } from "@rpg/core";
 
-class DemoScene extends Phaser.Scene {
-  public constructor() {
-    super("demo");
-  }
-
-  public create(): void {
-    const character = new Character({
-      id: "char-1",
-      name: "Knight",
-      primary: {
-        strength: 4,
-        dexterity: 4,
-        vitality: 5,
-        intelligence: 1,
-      },
-    });
-
-    this.add.text(20, 20, `Hero: ${character.name}`, {
-      color: "#ffffff",
-      fontFamily: "monospace",
-      fontSize: "20px",
-    });
-    this.add.text(20, 52, `HP: ${character.hp}`, {
-      color: "#8ee59b",
-      fontFamily: "monospace",
-      fontSize: "16px",
-    });
-  }
+export function startGame(parent: string): Phaser.Game {
+  return new Phaser.Game({
+    type: Phaser.AUTO,
+    parent,
+    width: 800,
+    height: 600,
+    backgroundColor: "#1d1d1d",
+    pixelArt: true,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    physics: {
+      default: "arcade",
+      arcade: { debug: false },
+    },
+    scene: [BootScene, PreloadScene, WorldScene],
+  });
 }
 
-new Phaser.Game({
-  type: Phaser.AUTO,
-  width: 800,
-  height: 450,
-  parent: "app",
-  backgroundColor: "#1a1f2e",
-  scene: [DemoScene],
-});
+startGame("app");

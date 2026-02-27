@@ -6,6 +6,8 @@
     "lib": ["ES2022"],
     "baseUrl": ".",
     "paths": {
+      "@core/*": ["packages/core/src/*"],
+      "@client/*": ["packages/client-phaser/src/*"],
       "@rpg/core": ["packages/core/src/index.ts"],
       "@rpg/core/*": ["packages/core/src/*"]
     },

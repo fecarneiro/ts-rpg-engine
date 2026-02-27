@@ -1,4 +1,4 @@
-import { Character } from "./character/character";
+import { Character } from "@core/character/character";
 
 const c = new Character({
   id: "char-1",
