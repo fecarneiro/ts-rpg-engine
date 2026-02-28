@@ -1,5 +1,4 @@
-import { Character } from "@core/character/character";
-import { WARRIOR } from "@core/character/characterClasses";
+import { Character, WARRIOR } from "@rpg/core";
 import Phaser from "phaser";
 import { REGISTRY_KEYS } from "../config/gameConfig";
 

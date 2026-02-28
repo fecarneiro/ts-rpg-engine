@@ -8,6 +8,28 @@ export const REGISTRY_KEYS = {
   PLAYER_CHARACTER: "playerCharacter",
 } as const;
 
+/** HUD panel (top-left corner) */
+export const HUD_PANEL = {
+  X: 16,
+  Y: 16,
+  WIDTH: 120,
+  HP_BAR_HEIGHT: 8,
+  PADDING: 8,
+  BG_COLOR: 0x1a1a1a,
+  BG_ALPHA: 0.8,
+  HP_BAR_BG_COLOR: 0x330000,
+  HP_BAR_FILL_COLOR: 0xff0000,
+} as const;
+
+/** Floating HP bar (above character) */
+export const HP_BAR_FLOATING = {
+  WIDTH: 48,
+  HEIGHT: 6,
+  OFFSET_Y: -40,
+  BG_COLOR: 0x330000,
+  FILL_COLOR: 0x00ff00,
+} as const;
+
 /** Canvas dimensions */
 export const CANVAS_WIDTH = 800;
 export const CANVAS_HEIGHT = 600;
