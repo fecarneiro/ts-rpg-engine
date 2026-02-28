@@ -3,6 +3,11 @@
  * Single source of truth for constants, asset keys, and paths.
  */
 
+/** Registry keys (shared state between scenes) */
+export const REGISTRY_KEYS = {
+  PLAYER_CHARACTER: "playerCharacter",
+} as const;
+
 /** Canvas dimensions */
 export const CANVAS_WIDTH = 800;
 export const CANVAS_HEIGHT = 600;
@@ -22,7 +27,7 @@ export const MAP_HEIGHT_TILES = Math.floor(CANVAS_HEIGHT / TILE_SIZE);
 
 /** Player sprite */
 export const PLAYER_FRAME_SIZE = 192;
-export const PLAYER_WORLD_SIZE = 96;
+export const PLAYER_WORLD_SIZE = TILE_SIZE * 4;
 export const PLAYER_SCALE = PLAYER_WORLD_SIZE / PLAYER_FRAME_SIZE;
 
 /** Movement */

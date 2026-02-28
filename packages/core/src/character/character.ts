@@ -3,13 +3,14 @@ import {
   type PrimaryAttributes,
   type SecondaryAttributes,
 } from "@core/attributes";
+import { type CharacterClass } from "./characterClasses";
 
 export type CharacterId = string;
 
 export interface CharacterParams {
   id: CharacterId;
   name: string;
-  primary: PrimaryAttributes;
+  characterClass: CharacterClass;
 }
 
 export interface CharacterSnapshot {
@@ -34,8 +35,8 @@ export class Character {
     this.id = params.id;
     this.name = params.name;
 
-    this._primary = params.primary;
-    this._secondary = calculateSecondaryAttributes(params.primary);
+    this._primary = params.characterClass.primaryAttributes;
+    this._secondary = calculateSecondaryAttributes(this._primary);
     this._hp = this._secondary.maxHp;
   }
 

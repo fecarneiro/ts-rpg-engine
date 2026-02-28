@@ -1,4 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "@client/game/config/gameConfig";
+import { BootScene } from "@client/game/scenes/BootScene";
 import { PreloadScene } from "@client/game/scenes/PreloadScene";
 import { WorldScene } from "@client/game/scenes/WorldScene";
 import Phaser from "phaser";
@@ -19,7 +20,7 @@ export function startGame(parent: string): Phaser.Game {
       default: "arcade",
       arcade: { debug: false },
     },
-    scene: [PreloadScene, WorldScene],
+    scene: [BootScene, PreloadScene, WorldScene],
   });
 }
 
