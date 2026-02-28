@@ -1,4 +1,4 @@
-import { Character, WARRIOR } from "@rpg/core";
+import { ARCHER, Character } from "@rpg/core";
 import Phaser from "phaser";
 import { REGISTRY_KEYS } from "../config/gameConfig";
 
@@ -11,7 +11,7 @@ export class BootScene extends Phaser.Scene {
     const playerCharacter = new Character({
       id: "player-1",
       name: "Hero",
-      characterClass: WARRIOR,
+      characterClass: ARCHER,
     });
     this.registry.set(REGISTRY_KEYS.PLAYER_CHARACTER, playerCharacter);
     this.scene.start("PreloadScene");

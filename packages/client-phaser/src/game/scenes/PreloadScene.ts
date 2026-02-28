@@ -2,7 +2,10 @@ import {
   ASSET_FRAME_CONFIG,
   ASSET_KEYS,
   ASSET_PATHS,
+  getCharacterAssets,
+  REGISTRY_KEYS,
 } from "@client/game/config/gameConfig";
+import type { Character } from "@rpg/core";
 import Phaser from "phaser";
 
 export class PreloadScene extends Phaser.Scene {
@@ -11,15 +14,22 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   public preload(): void {
+    /** Get the character assets from the registry */
+    const playerCharacter = this.registry.get(
+      REGISTRY_KEYS.PLAYER_CHARACTER
+    ) as Character;
+    const classId = playerCharacter.characterClass.characterClass;
+    const assets = getCharacterAssets(classId);
+
     this.load.spritesheet(
       ASSET_KEYS.PLAYER_IDLE_SHEET,
-      ASSET_PATHS.PLAYER_IDLE,
+      assets.idle,
       ASSET_FRAME_CONFIG.PLAYER
     );
 
     this.load.spritesheet(
       ASSET_KEYS.PLAYER_RUN_SHEET,
-      ASSET_PATHS.PLAYER_RUN,
+      assets.run,
       ASSET_FRAME_CONFIG.PLAYER
     );
 

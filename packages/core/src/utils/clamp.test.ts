@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
 import { clamp01 } from "@core/utils/clamp";
+import { describe, expect, it } from "vitest";
 
 describe("clamp01", () => {
   it("mantém valores entre 0 e 1", () => {

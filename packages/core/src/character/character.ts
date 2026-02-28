@@ -13,17 +13,11 @@ export interface CharacterParams {
   characterClass: CharacterClass;
 }
 
-export interface CharacterSnapshot {
-  id: CharacterId;
-  name: string;
-  primary: PrimaryAttributes;
-  hp: number;
-}
-
 export class Character {
   public readonly id: CharacterId;
   public readonly name: string;
 
+  private _characterClass: CharacterClass;
   private _primary: PrimaryAttributes;
   private _secondary: SecondaryAttributes;
   private _hp: number;
@@ -34,10 +28,15 @@ export class Character {
 
     this.id = params.id;
     this.name = params.name;
+    this._characterClass = params.characterClass;
 
     this._primary = params.characterClass.primaryAttributes;
     this._secondary = calculateSecondaryAttributes(this._primary);
     this._hp = this._secondary.maxHp;
+  }
+
+  get characterClass(): CharacterClass {
+    return this._characterClass;
   }
 
   get primary(): PrimaryAttributes {
