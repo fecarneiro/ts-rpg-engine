@@ -1,0 +1,14 @@
+import { BootScene } from "@game/scenes/BootScene";
+import { PreloadScene } from "@game/scenes/PreloadScene";
+import Phaser from "phaser";
+
+const config: Phaser.Types.Core.GameConfig = {
+  type: Phaser.AUTO,
+  parent: "game",
+  width: 800,
+  height: 600,
+  pixelArt: true,
+  scene: [PreloadScene, BootScene],
+};
+
+new Phaser.Game(config);

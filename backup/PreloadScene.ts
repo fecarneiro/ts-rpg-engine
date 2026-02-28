@@ -4,7 +4,7 @@ import {
   ASSET_PATHS,
   getCharacterAssets,
   REGISTRY_KEYS,
-} from "@client/game/config/gameConfig";
+} from "@client/config/gameConfig";
 import type { Character } from "@rpg/core";
 import Phaser from "phaser";
 
@@ -19,6 +19,7 @@ export class PreloadScene extends Phaser.Scene {
       REGISTRY_KEYS.PLAYER_CHARACTER
     ) as Character;
     const classId = playerCharacter.characterClass.characterClass;
+
     const assets = getCharacterAssets(classId);
 
     this.load.spritesheet(

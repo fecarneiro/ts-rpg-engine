@@ -8,7 +8,7 @@ import {
   TILE_SIZE,
   WORLD_HEIGHT,
   WORLD_WIDTH,
-} from "@client/game/config/gameConfig";
+} from "@client/config/gameConfig";
 import Phaser from "phaser";
 
 type Direction = "up" | "down" | "left" | "right";

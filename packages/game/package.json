@@ -1,16 +1,15 @@
 {
-  "name": "@rpg/client-phaser",
+  "name": "@game",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.json && vite build",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@rpg/core": "file:../core",
     "phaser": "^3.90.0"
   }
 }

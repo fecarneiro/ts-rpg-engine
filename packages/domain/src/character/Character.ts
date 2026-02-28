@@ -43,11 +43,27 @@ export class Character {
     return this._primary;
   }
 
-  get secondary(): SecondaryAttributes {
-    return this._secondary;
+  get isAlive(): boolean {
+    return this._hp > 0;
   }
 
   get hp(): number {
     return this._hp;
+  }
+
+  get maxHp(): number {
+    return this._secondary.maxHp;
+  }
+
+  get attack(): number {
+    return this._secondary.attack;
+  }
+
+  get defense(): number {
+    return this._secondary.defense;
+  }
+
+  get critChance(): number {
+    return this._secondary.critChance;
   }
 }
