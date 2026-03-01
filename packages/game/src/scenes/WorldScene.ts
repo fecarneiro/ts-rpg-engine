@@ -83,6 +83,9 @@ export class WorldScene extends Phaser.Scene {
 
     // Cursor keys
     this.cursors = this.input.keyboard!.createCursorKeys();
+
+    // Follow character with camera
+    this.cameras.main.startFollow(this.player, true);
   }
 
   public update(): void {
@@ -120,10 +123,11 @@ export class WorldScene extends Phaser.Scene {
 
     this.isMoving = true;
 
+    // Character movement
     const targetX = tileToPixel(nextTileX);
     const targetY = tileToPixel(nextTileY);
 
-    // Implement tweens (in-between)
+    // Tweens (in-between)
     this.tweens.add({
       targets: this.player,
       x: targetX,
