@@ -1,3 +1,5 @@
+import { ASSET_KEYS } from "@game/scenes/PreloadScene";
+import Phaser from "phaser";
 /**
  *
  * 3) Camera setup
@@ -25,8 +27,6 @@
  * - create(): build map, camera, player, collision data structures
  * - update(): handle input, step movement, animation state updates
  */
-
-import { ASSET_KEYS } from "@game/scenes/PreloadScene";
 
 export class WorldScene extends Phaser.Scene {
   public constructor() {
