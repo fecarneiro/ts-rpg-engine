@@ -8,6 +8,13 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 800,
   height: 600,
   pixelArt: true,
+  scale: {
+    mode: Phaser.Scale.FIT,
+  },
+  physics: {
+    default: "arcade",
+  },
+  // TODO: see more options
   scene: [PreloadScene, WorldScene],
 };
 

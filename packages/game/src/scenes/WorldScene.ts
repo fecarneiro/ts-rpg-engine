@@ -27,14 +27,27 @@ import Phaser from "phaser";
  * - create(): build map, camera, player, collision data structures
  * - update(): handle input, step movement, animation state updates
  */
+const TILE_SIZE = 64;
+const CHARACTER_SCALE = 0.75;
+const MOVE_DURATION_MS = 180;
+
+// Function to centralize sprite on tile
+function tileToPixel(tile: number): number {
+  return (tile * TILE_SIZE) / 2;
+}
 
 export class WorldScene extends Phaser.Scene {
+  private player!: Phaser.GameObjects.Sprite;
+  private playerTileX = 2;
+  private playerTileY = 2;
+  private isMoving = false;
+  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   public constructor() {
     super("WorldScene");
   }
 
   public create(): void {
-    // Create the tilemap.
+    // Create map + boundary limits
     const map = this.make.tilemap({ key: ASSET_KEYS.TILED_MAP_OVERWORLD });
 
     const tileset = map.addTilesetImage(
@@ -49,8 +62,36 @@ export class WorldScene extends Phaser.Scene {
     }
 
     map.createLayer("Terrain", tileset, 0, 0);
-    // Boundary limits for map and camera
+
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+    // Grid
+    const grid = this.add.grid(
+      0,
+      0,
+      map.widthInPixels,
+      map.heightInPixels,
+      TILE_SIZE,
+      TILE_SIZE,
+      0,
+      0
+    );
+    grid.setOrigin(0, 0);
+    grid.setOutlineStyle(0xffffff, 0.25);
+    grid.setDepth(0.5);
+
+    // Add character location + dimensions
+    const player = this.add.sprite(
+      tileToPixel(this.playerTileX),
+      tileToPixel(this.playerTileY),
+      ASSET_KEYS.SPRITESHEET_WARRIOR_IDLE,
+      0 // First character frame in spritesheet
+    );
+
+    player.setScale(CHARACTER_SCALE);
+
+    // Cursor keys
+    this.cursors = this.input.keyboard!.createCursorKeys();
   }
 }

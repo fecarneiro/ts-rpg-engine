@@ -28,6 +28,7 @@ export const ASSET_URLS = {
 
 export const ASSET_FRAME_CONFIG = {
   // Warrior frames are 192x192 px in this pack.
+  //[0][1][2][3][4][5][6][7]  → 8: 192×192 frames.
   CHARACTER_192: { frameWidth: 192, frameHeight: 192 },
 } as const;
 
