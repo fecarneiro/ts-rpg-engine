@@ -1,31 +1,21 @@
 import { ASSET_KEYS } from "@game/scenes/PreloadScene";
 import Phaser from "phaser";
 /**
+ * Roadmap (WorldScene) — suggested implementation order
  *
- * 3) Camera setup
- *    - Set camera bounds to prevent scrolling outside the map.
- *    - Optionally follow the player (camera.startFollow(player)).
- *    - Optionally adjust zoom for pixel art readability.
+ * 1) Camera follow [next]
+ *    - cameras.main.startFollow(player) to follow the character.
+ *    - Optional: adjust zoom for pixel art.
  *
- * 4) Collision / walkability (Tiled object layer)
- *    - Read the "Colliders" object layer from Tiled.
- *    - Convert collider rectangles into blocked grid tiles (e.g., Set of "x,y").
- *    - Before moving 1 tile, validate the next tile is not blocked.
+ * 2) Player animations
+ *    - Configure idle and run from spritesheets.
+ *    - Switch idle ↔ run based on isMoving.
  *
- * 5) Player creation
- *    - Spawn the player at a grid position (tileX/tileY) and convert to pixels (tile -> world coords).
- *    - Configure animations (idle/run) from spritesheets.
- *    - Note: sprite size (e.g., 192x192) is visual; collision/hitbox is usually smaller (feet area).
- *
- * 6) Grid movement (1 tile per step)
- *    - Read input (WASD/Arrows).
- *    - Compute next tile coordinate.
- *    - If walkable, tween/move exactly TILE_SIZE pixels to the next tile.
- *    - Lock input while moving to avoid overlapping moves.
- *
- * Typical lifecycle usage:
- * - create(): build map, camera, player, collision data structures
- * - update(): handle input, step movement, animation state updates
+ * 3) Collision / walkability (when adding internal obstacles to the map)
+ *    - Read "Colliders" layer from Tiled.
+ *    - Convert rectangles into blocked tiles (e.g., Set of "x,y").
+ *    - On movement validation, check if target tile is blocked.
+ *    - Note: current bounds (0–29, 0–19) already prevent leaving the map; Colliders are for internal obstacles.
  */
 const TILE_SIZE = 64;
 const CHARACTER_SCALE = 0.75;
@@ -33,7 +23,7 @@ const MOVE_DURATION_MS = 180;
 
 // Function to centralize sprite on tile
 function tileToPixel(tile: number): number {
-  return (tile * TILE_SIZE) / 2;
+  return tile * TILE_SIZE + TILE_SIZE / 2;
 }
 
 export class WorldScene extends Phaser.Scene {
@@ -82,16 +72,69 @@ export class WorldScene extends Phaser.Scene {
     grid.setDepth(0.5);
 
     // Add character location + dimensions
-    const player = this.add.sprite(
+    this.player = this.add.sprite(
       tileToPixel(this.playerTileX),
       tileToPixel(this.playerTileY),
       ASSET_KEYS.SPRITESHEET_WARRIOR_IDLE,
       0 // First character frame in spritesheet
     );
 
-    player.setScale(CHARACTER_SCALE);
+    this.player.setScale(CHARACTER_SCALE);
 
     // Cursor keys
     this.cursors = this.input.keyboard!.createCursorKeys();
+  }
+
+  public update(): void {
+    // Implement character movement state and keyboard configs
+    if (this.isMoving) return;
+
+    let nextTileX = this.playerTileX;
+    let nextTileY = this.playerTileY;
+
+    if (this.cursors.up.isDown || this.input.keyboard!.addKey("W").isDown) {
+      nextTileY -= 1;
+    } else if (
+      this.cursors.down.isDown ||
+      this.input.keyboard!.addKey("S").isDown
+    ) {
+      nextTileY += 1;
+    } else if (
+      this.cursors.left.isDown ||
+      this.input.keyboard!.addKey("A").isDown
+    ) {
+      nextTileX -= 1;
+    } else if (
+      this.cursors.right.isDown ||
+      this.input.keyboard!.addKey("D").isDown
+    ) {
+      nextTileX += 1;
+    } else {
+      return; // No input record
+    }
+
+    // Validate bounds (30x20 tiles) and character moving state = true
+    if (nextTileX < 0 || nextTileX >= 30 || nextTileY < 0 || nextTileY >= 20) {
+      return;
+    }
+
+    this.isMoving = true;
+
+    const targetX = tileToPixel(nextTileX);
+    const targetY = tileToPixel(nextTileY);
+
+    // Implement tweens (in-between)
+    this.tweens.add({
+      targets: this.player,
+      x: targetX,
+      y: targetY,
+      duration: MOVE_DURATION_MS,
+      ease: "Linear",
+      onComplete: () => {
+        this.playerTileX = nextTileX;
+        this.playerTileY = nextTileY;
+        this.isMoving = false;
+      },
+    });
   }
 }
