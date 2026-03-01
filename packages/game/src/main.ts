@@ -1,5 +1,5 @@
-import { BootScene } from "@game/scenes/BootScene";
 import { PreloadScene } from "@game/scenes/PreloadScene";
+import { WorldScene } from "@game/scenes/WorldScene";
 import Phaser from "phaser";
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -8,7 +8,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 800,
   height: 600,
   pixelArt: true,
-  scene: [PreloadScene, BootScene],
+  scene: [PreloadScene, WorldScene],
 };
 
 new Phaser.Game(config);
