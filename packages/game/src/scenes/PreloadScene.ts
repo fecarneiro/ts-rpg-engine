@@ -14,9 +14,9 @@ export const ASSET_KEYS = {
 
 export const ASSET_URLS = {
   /* Tile size: 64x64
-  * Width 30 tiles x 64 = 1920px
-  * Heigth 20 tiles x 64 = 1280px
-  /*  Physical world (0,0) to (1920,1280)
+   * Width 30 tiles x 64 = 1920px
+   * Height 20 tiles x 64 = 1280px
+   * Physical world (0,0) to (1920,1280) */
   TILED_MAP_OVERWORLD: "/assets/terrains/Overworld.tmj",
   TILESET_MAP_IMAGE: "/assets/terrains/Tilemap_color2.png",
 
