@@ -1,19 +1,16 @@
-import { characterAssets } from "@game/scenes/PreloadScene";
+import { Character, type Direction, type TilePosition } from "@domain";
+import {
+  CHARACTER_FRAME_END,
+  CHARACTER_SCALE,
+  characterAssets,
+  MOVE_DURATION_MS,
+} from "@game/configs/character";
+import { mapAssets, TILE_SIZE, tileToPixel } from "@game/configs/map";
 import Phaser from "phaser";
 
-const tileSize = 64;
-const characterScale = 0.75;
-const moveDurationMs = 180;
-const characterFrameEnd = 7;
-
-function tileToPixel(tile: number): number {
-  return tile * tileSize + tileSize / 2;
-}
-
 export class WorldScene extends Phaser.Scene {
+  private character!: Character;
   private player!: Phaser.GameObjects.Sprite;
-  private playerTileX = 2;
-  private playerTileY = 2;
   private isMoving = false;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   public constructor() {
@@ -21,9 +18,29 @@ export class WorldScene extends Phaser.Scene {
   }
 
   public create(): void {
+    // New character instance with archetype
+    this.character = new Character("warrior");
+
+    // Spaw character default position
+    const initialPosition: TilePosition = { tileX: 2, tileY: 2 };
+    const initialDirection: Direction = "down";
+    this.character.spawn(initialPosition, initialDirection);
+
+    // Add character to scene
+    this.player = this.add.sprite(
+      tileToPixel(this.character.position.tileX),
+      tileToPixel(this.character.position.tileY),
+      characterAssets.warrior.idle.spritesheetKey,
+      0 // First character frame in spritesheet
+    );
+
     // Create map + boundary limits
-    const map = this.make.tilemap({ key: assetKeys.tiledMapOverworld });
-    const tileset = map.addTilesetImage("Overworld", assetKeys.tilesetMapImage);
+    // TODO: Boundary limits hardcoded
+    const map = this.make.tilemap({ key: mapAssets.overworld.tilemap.key });
+    const tileset = map.addTilesetImage(
+      mapAssets.overworld.tilesetName,
+      mapAssets.overworld.tileset.key
+    );
 
     if (!tileset) {
       throw new Error(
@@ -42,8 +59,8 @@ export class WorldScene extends Phaser.Scene {
       0,
       map.widthInPixels,
       map.heightInPixels,
-      tileSize,
-      tileSize,
+      TILE_SIZE,
+      TILE_SIZE,
       0,
       0
     );
@@ -51,41 +68,37 @@ export class WorldScene extends Phaser.Scene {
     grid.setOutlineStyle(0xffffff, 0.25);
     grid.setDepth(0.5);
 
-    const warrior = characterAssets.warrior;
-
-    // Add character location + dimensions
-    this.player = this.add.sprite(
-      tileToPixel(this.playerTileX),
-      tileToPixel(this.playerTileY),
-      warrior.idle.spritesheetKey,
-      0 // First character frame in spritesheet
-    );
-
-    this.player.setScale(characterScale);
+    this.player.setScale(CHARACTER_SCALE);
 
     // Idle: 8 frames ÷ 8 = 1 s per cycle
     this.anims.create({
-      key: warrior.idle.animKey,
-      frames: this.anims.generateFrameNumbers(warrior.idle.spritesheetKey, {
-        start: 0,
-        end: characterFrameEnd,
-      }),
+      key: characterAssets.warrior.idle.animKey,
+      frames: this.anims.generateFrameNumbers(
+        characterAssets.warrior.idle.spritesheetKey,
+        {
+          start: 0,
+          end: CHARACTER_FRAME_END,
+        }
+      ),
       frameRate: 8,
       repeat: -1,
     });
 
     // Run: 8 frames ÷ 12 ≈ 0.67 s per cycle (more dynamic)
     this.anims.create({
-      key: warrior.run.animKey,
-      frames: this.anims.generateFrameNumbers(warrior.run.spritesheetKey, {
-        start: 0,
-        end: characterFrameEnd,
-      }),
+      key: characterAssets.warrior.run.animKey,
+      frames: this.anims.generateFrameNumbers(
+        characterAssets.warrior.run.spritesheetKey,
+        {
+          start: 0,
+          end: CHARACTER_FRAME_END,
+        }
+      ),
       frameRate: 12,
       repeat: -1,
     });
 
-    this.player.play(warrior.idle.animKey);
+    this.player.play(characterAssets.warrior.idle.animKey);
 
     // Cursor keys
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -98,26 +111,31 @@ export class WorldScene extends Phaser.Scene {
     // Implement character movement state and keyboard configs
     if (this.isMoving) return;
 
-    let nextTileX = this.playerTileX;
-    let nextTileY = this.playerTileY;
+    let nextTileX = this.character.position.tileX;
+    let nextTileY = this.character.position.tileY;
+    let direction: Direction | undefined = undefined;
 
     if (this.cursors.up.isDown || this.input.keyboard!.addKey("W").isDown) {
       nextTileY -= 1;
+      direction = "up";
     } else if (
       this.cursors.down.isDown ||
       this.input.keyboard!.addKey("S").isDown
     ) {
       nextTileY += 1;
+      direction = "down";
     } else if (
       this.cursors.left.isDown ||
       this.input.keyboard!.addKey("A").isDown
     ) {
       nextTileX -= 1;
+      direction = "left";
     } else if (
       this.cursors.right.isDown ||
       this.input.keyboard!.addKey("D").isDown
     ) {
       nextTileX += 1;
+      direction = "right";
     } else {
       return; // No input record
     }
@@ -137,11 +155,10 @@ export class WorldScene extends Phaser.Scene {
       targets: this.player,
       x: targetX,
       y: targetY,
-      duration: moveDurationMs,
+      duration: MOVE_DURATION_MS,
       ease: "Linear",
       onComplete: () => {
-        this.playerTileX = nextTileX;
-        this.playerTileY = nextTileY;
+        this.character.move(direction);
         this.isMoving = false;
         this.player.play(characterAssets.warrior.idle.animKey);
       },

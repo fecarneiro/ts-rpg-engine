@@ -1,3 +1,5 @@
+export const TILE_SIZE = 64;
+
 export const mapAssets = {
   overworld: {
     tilesetName: "Overworld",
@@ -11,3 +13,7 @@ export const mapAssets = {
     },
   },
 } as const;
+
+export function tileToPixel(tile: number): number {
+  return tile * TILE_SIZE + TILE_SIZE / 2;
+}

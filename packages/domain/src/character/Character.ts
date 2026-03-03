@@ -4,8 +4,8 @@ export type TilePosition = { tileX: number; tileY: number };
 
 export class Character {
   public readonly archetype: Archetype;
-  public direction: Direction;
-  public position: TilePosition;
+  public direction!: Direction;
+  public position!: TilePosition;
 
   constructor(archetype: Archetype) {
     this.archetype = archetype;

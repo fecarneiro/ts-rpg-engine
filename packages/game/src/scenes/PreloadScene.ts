@@ -1,9 +1,9 @@
-import { mapAssets } from "@game/maps/assets";
+import {
+  CHARACTER_FRAME_CONFIG,
+  characterAssets,
+} from "@game/configs/character";
+import { mapAssets } from "@game/configs/map";
 import Phaser from "phaser";
-
-export const assetFrameConfig = {
-  character192: { frameWidth: 192, frameHeight: 192 },
-} as const;
 
 export class PreloadScene extends Phaser.Scene {
   public constructor() {
@@ -16,18 +16,19 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(overworld.tileset.key, overworld.tileset.url);
 
     const { warrior } = characterAssets;
-    const frameConfig = assetFrameConfig.character192;
+
+    const characterFrameConfig = CHARACTER_FRAME_CONFIG;
 
     this.load.spritesheet(
       warrior.idle.spritesheetKey,
       warrior.idle.url,
-      frameConfig
+      characterFrameConfig
     );
 
     this.load.spritesheet(
       warrior.run.spritesheetKey,
       warrior.run.url,
-      frameConfig
+      characterFrameConfig
     );
   }
 
