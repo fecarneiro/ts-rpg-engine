@@ -1,10 +1,3 @@
-import { type PrimaryAttributes } from "@core/attributes";
-
-export interface CharacterClass {
-  characterClass: "warrior" | "lancer" | "archer" | "monk";
-  primaryAttributes: PrimaryAttributes;
-}
-
 export const WARRIOR: CharacterClass = {
   characterClass: "warrior",
   primaryAttributes: {

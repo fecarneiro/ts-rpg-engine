@@ -1,4 +1,4 @@
-import { assetKeys, characterAssets } from "@game/scenes/PreloadScene";
+import { characterAssets } from "@game/scenes/PreloadScene";
 import Phaser from "phaser";
 
 const tileSize = 64;
@@ -23,7 +23,6 @@ export class WorldScene extends Phaser.Scene {
   public create(): void {
     // Create map + boundary limits
     const map = this.make.tilemap({ key: assetKeys.tiledMapOverworld });
-
     const tileset = map.addTilesetImage("Overworld", assetKeys.tilesetMapImage);
 
     if (!tileset) {

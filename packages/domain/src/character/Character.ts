@@ -1,69 +1,36 @@
-import {
-  calculateSecondaryAttributes,
-  type PrimaryAttributes,
-  type SecondaryAttributes,
-} from "@core/attributes";
-import { type CharacterClass } from "./characterClasses";
-
-export type CharacterId = string;
-
-export interface CharacterParams {
-  id: CharacterId;
-  name: string;
-  characterClass: CharacterClass;
-}
+export type Archetype = "warrior" | "lancer" | "archer" | "monk";
+export type Direction = "up" | "down" | "left" | "right";
+export type TilePosition = { tileX: number; tileY: number };
 
 export class Character {
-  public readonly id: CharacterId;
-  public readonly name: string;
+  public readonly archetype: Archetype;
+  public direction: Direction;
+  public position: TilePosition;
 
-  private _characterClass: CharacterClass;
-  private _primary: PrimaryAttributes;
-  private _secondary: SecondaryAttributes;
-  private _hp: number;
-
-  constructor(params: CharacterParams) {
-    if (!params.id) throw new Error("Character id is required.");
-    if (!params.name.trim()) throw new Error("Character name is required.");
-
-    this.id = params.id;
-    this.name = params.name;
-    this._characterClass = params.characterClass;
-
-    this._primary = params.characterClass.primaryAttributes;
-    this._secondary = calculateSecondaryAttributes(this._primary);
-    this._hp = this._secondary.maxHp;
+  constructor(archetype: Archetype) {
+    this.archetype = archetype;
   }
 
-  get characterClass(): CharacterClass {
-    return this._characterClass;
+  public spawn(position: TilePosition, direction: Direction): void {
+    this.position = { ...position };
+    this.direction = direction;
   }
 
-  get primary(): PrimaryAttributes {
-    return this._primary;
-  }
-
-  get isAlive(): boolean {
-    return this._hp > 0;
-  }
-
-  get hp(): number {
-    return this._hp;
-  }
-
-  get maxHp(): number {
-    return this._secondary.maxHp;
-  }
-
-  get attack(): number {
-    return this._secondary.attack;
-  }
-
-  get defense(): number {
-    return this._secondary.defense;
-  }
-
-  get critChance(): number {
-    return this._secondary.critChance;
+  public move(direction: Direction): void {
+    this.direction = direction;
+    switch (direction) {
+      case "up":
+        this.position.tileY -= 1;
+        break;
+      case "down":
+        this.position.tileY += 1;
+        break;
+      case "left":
+        this.position.tileX -= 1;
+        break;
+      case "right":
+        this.position.tileX += 1;
+        break;
+    }
   }
 }
