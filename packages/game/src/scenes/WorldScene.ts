@@ -69,6 +69,7 @@ export class WorldScene extends Phaser.Scene {
     grid.setDepth(0.5);
 
     this.player.setScale(CHARACTER_SCALE);
+    this.player.setDepth(1); // Above grid (0.5) so character is visible
 
     // Idle: 8 frames ÷ 8 = 1 s per cycle
     this.anims.create({

@@ -1,4 +1,4 @@
-import { clamp01 } from "@core/utils/clamp";
+import { clamp01 } from "@domain/utils/clamp";
 import { type PrimaryAttributes, type SecondaryAttributes } from "./types";
 
 export function calculateSecondaryAttributes(
