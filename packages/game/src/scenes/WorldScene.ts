@@ -1,14 +1,6 @@
 import { assetKeys, characterAssets } from "@game/scenes/PreloadScene";
 import Phaser from "phaser";
-/**
- * Roadmap (WorldScene) — suggested implementation order
- *
- * 3) Collision / walkability (when adding internal obstacles to the map)
- *    - Read "Colliders" layer from Tiled.
- *    - Convert rectangles into blocked tiles (e.g., Set of "x,y").
- *    - On movement validation, check if target tile is blocked.
- *    - Note: current bounds (0–29, 0–19) already prevent leaving the map; Colliders are for internal obstacles.
- */
+
 const tileSize = 64;
 const characterScale = 0.75;
 const moveDurationMs = 180;
