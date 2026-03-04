@@ -13,6 +13,12 @@ export class WorldScene extends Phaser.Scene {
   private player!: Phaser.GameObjects.Sprite;
   private isMoving = false;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private keyW!: Phaser.Input.Keyboard.Key;
+  private keyA!: Phaser.Input.Keyboard.Key;
+  private keyS!: Phaser.Input.Keyboard.Key;
+  private keyD!: Phaser.Input.Keyboard.Key;
+  private mapWidthTiles!: number;
+  private mapHeightTiles!: number;
   public constructor() {
     super("WorldScene");
   }
@@ -50,8 +56,12 @@ export class WorldScene extends Phaser.Scene {
 
     map.createLayer("Terrain", tileset, 0, 0);
 
+    // Boundary limits
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+    this.mapWidthTiles = map.width;
+    this.mapHeightTiles = map.height;
 
     // Grid
     const grid = this.add.grid(
@@ -104,6 +114,12 @@ export class WorldScene extends Phaser.Scene {
     // Cursor keys
     this.cursors = this.input.keyboard!.createCursorKeys();
 
+    // WASD
+    this.keyW = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.keyS = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
     // Follow character with camera
     this.cameras.main.startFollow(this.player, true);
   }
@@ -116,33 +132,29 @@ export class WorldScene extends Phaser.Scene {
     let nextTileY = this.character.position.tileY;
     let direction: Direction | undefined = undefined;
 
-    if (this.cursors.up.isDown || this.input.keyboard!.addKey("W").isDown) {
+    if (this.cursors.up.isDown || this.keyW.isDown) {
       nextTileY -= 1;
       direction = "up";
-    } else if (
-      this.cursors.down.isDown ||
-      this.input.keyboard!.addKey("S").isDown
-    ) {
+    } else if (this.cursors.down.isDown || this.keyS.isDown) {
       nextTileY += 1;
       direction = "down";
-    } else if (
-      this.cursors.left.isDown ||
-      this.input.keyboard!.addKey("A").isDown
-    ) {
+    } else if (this.cursors.left.isDown || this.keyA.isDown) {
       nextTileX -= 1;
       direction = "left";
-    } else if (
-      this.cursors.right.isDown ||
-      this.input.keyboard!.addKey("D").isDown
-    ) {
+    } else if (this.cursors.right.isDown || this.keyD.isDown) {
       nextTileX += 1;
       direction = "right";
     } else {
-      return; // No input record
+      return;
     }
 
-    // Validate bounds (30x20 tiles) and character moving state = true
-    if (nextTileX < 0 || nextTileX >= 30 || nextTileY < 0 || nextTileY >= 20) {
+    // Validate boundary limits
+    if (
+      nextTileX < 0 ||
+      nextTileX >= this.mapWidthTiles ||
+      nextTileY < 0 ||
+      nextTileY >= this.mapHeightTiles
+    ) {
       return;
     }
 
