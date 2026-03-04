@@ -5,83 +5,39 @@ import {
   characterAssets,
   MOVE_DURATION_MS,
 } from "@game/configs/character";
-import { mapAssets, TILE_SIZE, tileToPixel } from "@game/configs/map";
+import { tileToPixel } from "@game/configs/map";
+import { PlayerController, WorldMap } from "@game/world";
 import Phaser from "phaser";
 
 export class WorldScene extends Phaser.Scene {
   private character!: Character;
   private player!: Phaser.GameObjects.Sprite;
-  private isMoving = false;
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  private keyW!: Phaser.Input.Keyboard.Key;
-  private keyA!: Phaser.Input.Keyboard.Key;
-  private keyS!: Phaser.Input.Keyboard.Key;
-  private keyD!: Phaser.Input.Keyboard.Key;
-  private mapWidthTiles!: number;
-  private mapHeightTiles!: number;
+  private playerController!: PlayerController;
+
   public constructor() {
     super("WorldScene");
   }
 
   public create(): void {
-    // New character instance with archetype
     this.character = new Character("warrior");
 
-    // Spaw character default position
     const initialPosition: TilePosition = { tileX: 2, tileY: 2 };
     const initialDirection: Direction = "down";
     this.character.spawn(initialPosition, initialDirection);
 
-    // Add character to scene
+    const worldMap = new WorldMap(this);
+    const mapData = worldMap.build();
+
     this.player = this.add.sprite(
       tileToPixel(this.character.position.tileX),
       tileToPixel(this.character.position.tileY),
       characterAssets.warrior.idle.spritesheetKey,
-      0 // First character frame in spritesheet
-    );
-
-    // Create map + boundary limits
-    // TODO: Boundary limits hardcoded
-    const map = this.make.tilemap({ key: mapAssets.overworld.tilemap.key });
-    const tileset = map.addTilesetImage(
-      mapAssets.overworld.tilesetName,
-      mapAssets.overworld.tileset.key
-    );
-
-    if (!tileset) {
-      throw new Error(
-        'Tileset "Overworld" not found. Confirm name="Overworld" inside the Overworld.tsx file'
-      );
-    }
-
-    map.createLayer("Terrain", tileset, 0, 0);
-
-    // Boundary limits
-    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-    this.mapWidthTiles = map.width;
-    this.mapHeightTiles = map.height;
-
-    // Grid
-    const grid = this.add.grid(
-      0,
-      0,
-      map.widthInPixels,
-      map.heightInPixels,
-      TILE_SIZE,
-      TILE_SIZE,
-      0,
       0
     );
-    grid.setOrigin(0, 0);
-    grid.setOutlineStyle(0xffffff, 0.25);
-    grid.setDepth(0.5);
 
     this.player.setScale(CHARACTER_SCALE);
-    this.player.setDepth(1); // Above grid (0.5) so character is visible
+    this.player.setDepth(1);
 
-    // Idle: 8 frames ÷ 8 = 1 s per cycle
     this.anims.create({
       key: characterAssets.warrior.idle.animKey,
       frames: this.anims.generateFrameNumbers(
@@ -95,7 +51,6 @@ export class WorldScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    // Run: 8 frames ÷ 12 ≈ 0.67 s per cycle (more dynamic)
     this.anims.create({
       key: characterAssets.warrior.run.animKey,
       frames: this.anims.generateFrameNumbers(
@@ -111,70 +66,21 @@ export class WorldScene extends Phaser.Scene {
 
     this.player.play(characterAssets.warrior.idle.animKey);
 
-    // Cursor keys
-    this.cursors = this.input.keyboard!.createCursorKeys();
+    this.playerController = new PlayerController({
+      scene: this,
+      character: this.character,
+      player: this.player,
+      moveDurationMs: MOVE_DURATION_MS,
+      idleAnimationKey: characterAssets.warrior.idle.animKey,
+      runAnimationKey: characterAssets.warrior.run.animKey,
+      mapWidthTiles: mapData.widthTiles,
+      mapHeightTiles: mapData.heightTiles,
+    });
 
-    // WASD
-    this.keyW = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.keyS = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-    // Follow character with camera
     this.cameras.main.startFollow(this.player, true);
   }
 
   public update(): void {
-    // Implement character movement state and keyboard configs
-    if (this.isMoving) return;
-
-    let nextTileX = this.character.position.tileX;
-    let nextTileY = this.character.position.tileY;
-    let direction: Direction | undefined = undefined;
-
-    if (this.cursors.up.isDown || this.keyW.isDown) {
-      nextTileY -= 1;
-      direction = "up";
-    } else if (this.cursors.down.isDown || this.keyS.isDown) {
-      nextTileY += 1;
-      direction = "down";
-    } else if (this.cursors.left.isDown || this.keyA.isDown) {
-      nextTileX -= 1;
-      direction = "left";
-    } else if (this.cursors.right.isDown || this.keyD.isDown) {
-      nextTileX += 1;
-      direction = "right";
-    } else {
-      return;
-    }
-
-    // Validate boundary limits
-    if (
-      nextTileX < 0 ||
-      nextTileX >= this.mapWidthTiles ||
-      nextTileY < 0 ||
-      nextTileY >= this.mapHeightTiles
-    ) {
-      return;
-    }
-
-    this.isMoving = true;
-    this.player.play(characterAssets.warrior.run.animKey);
-
-    const targetX = tileToPixel(nextTileX);
-    const targetY = tileToPixel(nextTileY);
-
-    this.tweens.add({
-      targets: this.player,
-      x: targetX,
-      y: targetY,
-      duration: MOVE_DURATION_MS,
-      ease: "Linear",
-      onComplete: () => {
-        this.character.move(direction);
-        this.isMoving = false;
-        this.player.play(characterAssets.warrior.idle.animKey);
-      },
-    });
+    this.playerController.update();
   }
 }
