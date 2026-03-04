@@ -1,0 +1,18 @@
+{
+  // Overrides for performance
+  // Avoid save + format + lint on every file change
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 2000,
+
+  // Reduce file watcher load (many PNG assets)
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.next/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/public/assets/**": true
+  }
+}

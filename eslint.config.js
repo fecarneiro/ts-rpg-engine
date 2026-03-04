@@ -1,19 +1,23 @@
-import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
+import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
 
 export default defineConfig(
   { ignores: ["dist/", "node_modules/", "coverage/", "packages/*/dist/"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   prettier,
-  // Aplica type-aware linting nos pacotes do monorepo
+  // Apply type-aware linting to the monorepo packages
+  // Use explicit project instead of projectService for less overhead
   {
     files: ["packages/*/src/**/*.ts"],
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        project: [
+          "packages/domain/tsconfig.json",
+          "packages/game/tsconfig.json",
+        ],
       },
       globals: {
         console: "readonly",
@@ -27,7 +31,7 @@ export default defineConfig(
       },
     },
     rules: {
-      // Regras alinhadas ao tsconfig strict
+      // Rules aligned with tsconfig strict
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -45,7 +49,7 @@ export default defineConfig(
     },
   },
   {
-    // Arquivos de tipos podem exportar sem uso local
+    // Types files can export without local usage
     files: ["**/types.ts", "**/*.d.ts"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
