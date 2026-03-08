@@ -6,7 +6,7 @@ import {
   MOVE_DURATION_MS,
 } from "@game/configs/character";
 import { tileToPixel } from "@game/configs/map";
-import { WorldMapSetup } from "@game/world/WorldMapSetup";
+import { MapSetup, PlayerController } from "@game/world";
 import Phaser from "phaser";
 
 export class WorldScene extends Phaser.Scene {
@@ -25,7 +25,7 @@ export class WorldScene extends Phaser.Scene {
     const initialDirection: Direction = "down";
     this.character.spawn(initialPosition, initialDirection);
 
-    const worldMap = new WorldMapSetup(this);
+    const worldMap = new MapSetup(this);
     const mapData = worldMap.build();
 
     this.player = this.add.sprite(

@@ -2,16 +2,16 @@ import { TILE_SIZE, mapAssets } from "@game/configs/map";
 import type Phaser from "phaser";
 
 /** Return type with map dimensions in tiles for bounds validation */
-export type WorldMapBuildResult = {
+export type WorldMapSetupBuildResult = {
   widthTiles: number;
   heightTiles: number;
 };
 
-export class WorldMap {
+export class WorldMapSetup {
   public constructor(private readonly scene: Phaser.Scene) {}
 
   /** Creates tilemap, layer, physics/camera bounds, grid and returns dimensions */
-  public build(): WorldMapBuildResult {
+  public build(): WorldMapSetupBuildResult {
     const map = this.scene.make.tilemap({
       key: mapAssets.overworld.tilemap.key,
     });
@@ -26,28 +26,32 @@ export class WorldMap {
         'Tileset "Overworld" not found. Confirm name="Overworld" inside the Overworld.tsx file'
       );
     }
+    // Renders Terrain layer from TMJ
+    map.createLayer("Terrain", tileset, 0, 0);
 
-    map.createLayer("Terrain", tileset, 0, 0); // Renders Terrain layer from TMJ
-
+    // Limits physics world to map size
     this.scene.physics.world.setBounds(
       0,
       0,
       map.widthInPixels,
       map.heightInPixels
-    ); // Limits physics world to map size
+    );
+
+    // Keeps camera within map bounds
     this.scene.cameras.main.setBounds(
       0,
       0,
       map.widthInPixels,
       map.heightInPixels
-    ); // Keeps camera within map bounds
+    );
 
     this.createGrid(map.widthInPixels, map.heightInPixels);
 
+    // Dimensions for PlayerController bounds
     return {
       widthTiles: map.width,
       heightTiles: map.height,
-    }; // Dimensions for PlayerController bounds
+    };
   }
 
   /** Draws debug grid using TILE_SIZE */
