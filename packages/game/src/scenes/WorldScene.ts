@@ -12,7 +12,6 @@ import Phaser from "phaser";
 export class WorldScene extends Phaser.Scene {
   private character!: Character;
   private player!: Phaser.GameObjects.Sprite;
-  private playerController!: PlayerController;
 
   public constructor() {
     super("WorldScene");

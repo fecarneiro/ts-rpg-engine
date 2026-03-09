@@ -1,9 +1,10 @@
-import type { WalkabilityChecker } from "@application/character/WalkabilityChecker";
 import type { Character } from "@domain/character/Character";
 import type { Direction } from "@domain/character/direction/Direction";
 import { applyMovement } from "@domain/character/movement/Movement";
 
-export type { WalkabilityChecker };
+export interface WalkabilityChecker {
+  isWalkable(x: number, y: number): boolean;
+}
 
 export function tryMove(
   character: Character,
