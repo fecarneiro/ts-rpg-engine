@@ -19,6 +19,7 @@ export interface CharacterProps {
   archetype: Archetype;
   position: Position;
   level: number;
+  direction: Direction;
 }
 
 export class Character implements CharacterProps {
@@ -29,12 +30,14 @@ export class Character implements CharacterProps {
     secondary: SecondaryAttributes;
   };
   public position: Position;
+  public direction: Direction;
   public level: number;
 
   constructor(
     nickname: string,
     archetype: Archetype,
     position: Position = { x: 0, y: 0 },
+    direction: Direction = "down",
     level: number = 1
   ) {
     const preset = getArchetypePreset(archetype);
@@ -46,10 +49,12 @@ export class Character implements CharacterProps {
       secondary: calculateSecondaryAttributes(preset.attributes.primary),
     };
     this.position = position;
+    this.direction = direction;
     this.level = level;
   }
 
   public move(direction: Direction): void {
     this.position = applyMovement(this.position, direction);
+    this.direction = direction;
   }
 }
