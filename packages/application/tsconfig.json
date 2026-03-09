@@ -1,8 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@domain": ["packages/domain/src/index.ts"],
+      "@domain/*": ["packages/domain/src/*"],
+      "@application": ["packages/application/index.ts"],
+      "@application/*": ["packages/application/*"]
+    }
   },
-  "include": ["*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }
