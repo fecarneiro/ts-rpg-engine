@@ -1,7 +1,7 @@
 import {
   createPrimaryAttributes,
   type PrimaryAttributes,
-} from "@domain/attributes/primary";
+} from "@domain/character/attributes/PrimaryAttributes";
 
 export type Archetype = "warrior" | "lancer" | "archer" | "monk";
 
@@ -17,8 +17,8 @@ const archetypePreset: Record<Archetype, ArchetypePreset> = {
     archetype: "warrior",
     attributes: {
       primary: createPrimaryAttributes({
-        strength: 5,
-        vitality: 5,
+        strength: 2,
+        vitality: 3,
       }),
     },
   },
@@ -27,7 +27,6 @@ const archetypePreset: Record<Archetype, ArchetypePreset> = {
     attributes: {
       primary: createPrimaryAttributes({
         strength: 3,
-        dexterity: 5,
         vitality: 2,
       }),
     },
@@ -36,8 +35,7 @@ const archetypePreset: Record<Archetype, ArchetypePreset> = {
     archetype: "archer",
     attributes: {
       primary: createPrimaryAttributes({
-        strength: 2,
-        dexterity: 6,
+        strength: 3,
         vitality: 2,
       }),
     },
@@ -46,7 +44,7 @@ const archetypePreset: Record<Archetype, ArchetypePreset> = {
     archetype: "monk",
     attributes: {
       primary: createPrimaryAttributes({
-        intelligence: 8,
+        intelligence: 3,
         vitality: 2,
       }),
     },

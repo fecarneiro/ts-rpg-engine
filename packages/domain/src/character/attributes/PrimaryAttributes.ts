@@ -1,8 +1,4 @@
-export type PrimaryAttribute =
-  | "strength"
-  | "dexterity"
-  | "intelligence"
-  | "vitality";
+export type PrimaryAttribute = "strength" | "intelligence" | "vitality";
 
 export type PrimaryAttributes = Record<PrimaryAttribute, number>;
 
@@ -13,7 +9,6 @@ export function createPrimaryAttributes(
 ): PrimaryAttributes {
   return {
     strength: partial.strength ?? DEFAULT_VALUE,
-    dexterity: partial.dexterity ?? DEFAULT_VALUE,
     intelligence: partial.intelligence ?? DEFAULT_VALUE,
     vitality: partial.vitality ?? DEFAULT_VALUE,
   };
@@ -25,7 +20,6 @@ export function addPrimaryModifiers(
 ): PrimaryAttributes {
   return {
     strength: base.strength + (modifiers.strength ?? 0),
-    dexterity: base.dexterity + (modifiers.dexterity ?? 0),
     intelligence: base.intelligence + (modifiers.intelligence ?? 0),
     vitality: base.vitality + (modifiers.vitality ?? 0),
   };
