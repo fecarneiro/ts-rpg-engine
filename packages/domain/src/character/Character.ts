@@ -10,7 +10,9 @@ import {
   calculateSecondaryAttributes,
   type SecondaryAttributes,
 } from "@domain/character/attributes/SecondaryAttributs";
-import type { Direction } from "./movement/Direction";
+import type { Direction } from "@domain/character/direction/Direction";
+import { applyMovement } from "@domain/character/movement/Movement";
+import type { Position } from "@domain/character/position/Position";
 
 export class Character {
   public readonly archetype: Archetype;
@@ -18,8 +20,9 @@ export class Character {
     primary: PrimaryAttributes;
     secondary: SecondaryAttributes;
   };
+  public position: Position;
 
-  constructor(archetype: Archetype) {
+  constructor(archetype: Archetype, position: Position = { x: 0, y: 0 }) {
     const preset = getArchetypePreset(archetype);
 
     this.archetype = preset.archetype;
@@ -27,8 +30,9 @@ export class Character {
       primary: createPrimaryAttributes(preset.attributes.primary),
       secondary: calculateSecondaryAttributes(preset.attributes.primary),
     };
+    this.position = position;
   }
-  move(direction: Direction) {
-    this.position = this.position.move(direction);
+  public move(direction: Direction): void {
+    this.position = applyMovement(this.position, direction);
   }
 }
