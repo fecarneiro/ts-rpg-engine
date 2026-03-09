@@ -14,7 +14,14 @@ import type { Direction } from "@domain/character/direction/Direction";
 import { applyMovement } from "@domain/character/movement/Movement";
 import type { Position } from "@domain/character/position/Position";
 
-export class Character {
+export interface CharacterProps {
+  nickname: string;
+  archetype: Archetype;
+  position: Position;
+  level: number;
+}
+
+export class Character implements CharacterProps {
   public readonly nickname: string;
   public readonly archetype: Archetype;
   public readonly attributes: {

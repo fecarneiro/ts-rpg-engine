@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       "@game": resolve(__dirname, "src"),
       "@domain": resolve(__dirname, "../domain/src"),
+      "@application": resolve(__dirname, "../application"),
     },
   },
 });

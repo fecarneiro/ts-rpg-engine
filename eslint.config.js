@@ -16,6 +16,7 @@ export default defineConfig(
       parserOptions: {
         project: [
           "packages/domain/tsconfig.json",
+          "packages/application/tsconfig.json",
           "packages/game/tsconfig.json",
         ],
       },
