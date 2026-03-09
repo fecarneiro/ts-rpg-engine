@@ -1,5 +1,9 @@
 import { clamp01 } from "@domain/utils/clamp";
-import { type PrimaryAttributes, type SecondaryAttributes } from "./types";
+import type { PrimaryAttributes } from "./primary";
+
+export type SecondaryAttribute = "maxHp" | "attack" | "defense" | "critChance";
+
+export type SecondaryAttributes = Record<SecondaryAttribute, number>;
 
 export function calculateSecondaryAttributes(
   primary: PrimaryAttributes

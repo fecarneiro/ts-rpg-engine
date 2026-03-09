@@ -1,4 +1,10 @@
-import { type PrimaryAttributes } from "./types";
+export type PrimaryAttribute =
+  | "strength"
+  | "dexterity"
+  | "intelligence"
+  | "vitality";
+
+export type PrimaryAttributes = Record<PrimaryAttribute, number>;
 
 const DEFAULT_VALUE = 1;
 
