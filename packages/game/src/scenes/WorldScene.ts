@@ -1,85 +1,38 @@
-import { Character, type Direction, type TilePosition } from "@domain";
-import {
-  CHARACTER_FRAME_END,
-  CHARACTER_SCALE,
-  characterAssets,
-  MOVE_DURATION_MS,
-} from "@game/configs/character";
-import { tileToPixel } from "@game/configs/map";
-import { WorldMapSetup } from "@game/world/WorldMapSetup";
+import { MapBuilder } from "@game/phaser/MapBuilder";
+import { CharacterBuilder } from "@game/phaser/CharacterBuilder";
 import Phaser from "phaser";
 
 export class WorldScene extends Phaser.Scene {
-  private character!: Character;
   private player!: Phaser.GameObjects.Sprite;
+  // TODO Fase 2: private character!: Character;
+  // TODO Fase 2: private playerController!: PlayerController;
 
   public constructor() {
     super("WorldScene");
   }
 
   public create(): void {
-    this.character = new Character("warrior");
+    new MapBuilder(this).build();
 
-    const initialPosition: TilePosition = { tileX: 2, tileY: 2 };
-    const initialDirection: Direction = "down";
-    this.character.spawn(initialPosition, initialDirection);
+    const { player } = new CharacterBuilder(this).build();
+    this.player = player;
 
-    const worldMap = new WorldMapSetup(this);
-    const mapData = worldMap.build();
-
-    this.player = this.add.sprite(
-      tileToPixel(this.character.position.tileX),
-      tileToPixel(this.character.position.tileY),
-      characterAssets.warrior.idle.spritesheetKey,
-      0
-    );
-
-    this.player.setScale(CHARACTER_SCALE);
-    this.player.setDepth(1);
-
-    this.anims.create({
-      key: characterAssets.warrior.idle.animKey,
-      frames: this.anims.generateFrameNumbers(
-        characterAssets.warrior.idle.spritesheetKey,
-        {
-          start: 0,
-          end: CHARACTER_FRAME_END,
-        }
-      ),
-      frameRate: 8,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: characterAssets.warrior.run.animKey,
-      frames: this.anims.generateFrameNumbers(
-        characterAssets.warrior.run.spritesheetKey,
-        {
-          start: 0,
-          end: CHARACTER_FRAME_END,
-        }
-      ),
-      frameRate: 12,
-      repeat: -1,
-    });
-
-    this.player.play(characterAssets.warrior.idle.animKey);
-
-    this.playerController = new PlayerController({
-      scene: this,
-      character: this.character,
-      player: this.player,
-      moveDurationMs: MOVE_DURATION_MS,
-      idleAnimationKey: characterAssets.warrior.idle.animKey,
-      runAnimationKey: characterAssets.warrior.run.animKey,
-      mapWidthTiles: mapData.widthTiles,
-      mapHeightTiles: mapData.heightTiles,
-    });
+    // TODO Fase 2: guardar character e criar PlayerController com:
+    // new PlayerController({
+    //   scene: this,
+    //   character,
+    //   player: this.player,
+    //   moveDurationMs: MOVE_DURATION_MS,
+    //   idleAnimKey: characterAssets.warrior.idle.animKey,
+    //   runAnimKey: characterAssets.warrior.run.animKey,
+    //   mapWidthTiles: mapData.widthTiles,
+    //   mapHeightTiles: mapData.heightTiles,
+    // });
 
     this.cameras.main.startFollow(this.player, true);
   }
 
   public update(): void {
-    this.playerController.update();
+    // TODO Fase 2: this.playerController.update();
   }
 }

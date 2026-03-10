@@ -11,11 +11,11 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    const { overworld } = mapAssets;
-    this.load.tilemapTiledJSON(overworld.tilemap.key, overworld.tilemap.url);
-    this.load.image(overworld.tileset.key, overworld.tileset.url);
+    const worldMap = mapAssets.worldMap;
+    this.load.tilemapTiledJSON(worldMap.tilemap.key, worldMap.tilemap.url);
+    this.load.image(worldMap.tileset.key, worldMap.tileset.url);
 
-    const { warrior } = characterAssets;
+    const warrior = characterAssets.warrior;
 
     const characterFrameConfig = CHARACTER_FRAME_CONFIG;
 

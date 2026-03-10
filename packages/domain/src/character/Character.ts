@@ -15,7 +15,7 @@ import { applyMovement } from "@domain/character/movement/Movement";
 import type { Position } from "@domain/character/position/Position";
 
 export interface CharacterProps {
-  nickname: string;
+  id: string;
   archetype: Archetype;
   position: Position;
   level: number;
@@ -23,7 +23,7 @@ export interface CharacterProps {
 }
 
 export class Character implements CharacterProps {
-  public readonly nickname: string;
+  public readonly id: string;
   public readonly archetype: Archetype;
   public readonly attributes: {
     primary: PrimaryAttributes;
@@ -34,7 +34,7 @@ export class Character implements CharacterProps {
   public level: number;
 
   constructor(
-    nickname: string,
+    id: string,
     archetype: Archetype,
     position: Position = { x: 0, y: 0 },
     direction: Direction = "down",
@@ -42,7 +42,7 @@ export class Character implements CharacterProps {
   ) {
     const preset = getArchetypePreset(archetype);
 
-    this.nickname = nickname;
+    this.id = id;
     this.archetype = preset.archetype;
     this.attributes = {
       primary: createPrimaryAttributes(preset.attributes.primary),
@@ -57,4 +57,14 @@ export class Character implements CharacterProps {
     this.position = applyMovement(this.position, direction);
     this.direction = direction;
   }
+}
+
+export function createCharacter(
+  id: string,
+  archetype: Archetype,
+  position: Position = { x: 0, y: 0 },
+  direction: Direction = "down",
+  level = 1
+): Character {
+  return new Character(id, archetype, position, direction, level);
 }

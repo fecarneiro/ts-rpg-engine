@@ -8,9 +8,7 @@
     "paths": {
       "@domain": ["packages/domain/src/index.ts"],
       "@domain/*": ["packages/domain/src/*"],
-      "@game/*": ["packages/game/src/*"],
-      "@application": ["packages/application/index.ts"],
-      "@application/*": ["packages/application/*"]
+      "@game/*": ["packages/game/src/*"]
     },
     "strict": true,
     "noUncheckedIndexedAccess": true,

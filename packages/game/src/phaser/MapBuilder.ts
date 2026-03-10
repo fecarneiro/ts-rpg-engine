@@ -2,28 +2,28 @@ import { TILE_SIZE, mapAssets } from "@game/configs/map";
 import type Phaser from "phaser";
 
 /** Return type with map dimensions in tiles for bounds validation */
-export type WorldMapSetupBuildResult = {
+export type MapBuilderResult = {
   widthTiles: number;
   heightTiles: number;
 };
 
-export class WorldMapSetup {
+export class MapBuilder {
   public constructor(private readonly scene: Phaser.Scene) {}
 
   /** Creates tilemap, layer, physics/camera bounds, grid and returns dimensions */
-  public build(): WorldMapSetupBuildResult {
+  public build(): MapBuilderResult {
     const map = this.scene.make.tilemap({
-      key: mapAssets.overworld.tilemap.key,
+      key: mapAssets.worldMap.tilemap.key,
     });
 
     const tileset = map.addTilesetImage(
-      mapAssets.overworld.tilesetName,
-      mapAssets.overworld.tileset.key
+      mapAssets.worldMap.tilesetName,
+      mapAssets.worldMap.tileset.key
     );
 
     if (!tileset) {
       throw new Error(
-        'Tileset "Overworld" not found. Confirm name="Overworld" inside the Overworld.tsx file'
+        'Tileset "WorldMap" not found. Confirm name="WorldMap" inside the WorldMap.tmj file'
       );
     }
     // Renders Terrain layer from TMJ
@@ -53,7 +53,6 @@ export class WorldMapSetup {
       heightTiles: map.height,
     };
   }
-
   /** Draws debug grid using TILE_SIZE */
   private createGrid(widthInPixels: number, heightInPixels: number): void {
     const grid = this.scene.add.grid(
