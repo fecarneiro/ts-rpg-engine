@@ -13,6 +13,7 @@ export type CharacterAsset = {
   id: Archetype;
   idle: AnimationAsset;
   run: AnimationAsset;
+  attack: AnimationAsset;
 };
 
 export const CHARACTER_ASSETS: CharacterAsset[] = [
@@ -34,6 +35,14 @@ export const CHARACTER_ASSETS: CharacterAsset[] = [
       frameWidth: 192,
       frameHeight: 192,
     },
+    attack: {
+      spritesheetKey: "spritesheet_warrior_attack",
+      animKey: "warrior_attack",
+      url: "/assets/characters/warrior/Warrior_Attack1.png",
+      frameEnd: 9,
+      frameWidth: 192,
+      frameHeight: 192,
+    },
   },
   {
     id: "lancer",
@@ -50,6 +59,14 @@ export const CHARACTER_ASSETS: CharacterAsset[] = [
       animKey: "lancer_run",
       url: "/assets/characters/lancer/Lancer_Run.png",
       frameEnd: 5,
+      frameWidth: 320,
+      frameHeight: 320,
+    },
+    attack: {
+      spritesheetKey: "spritesheet_lancer_attack",
+      animKey: "lancer_attack",
+      url: "/assets/characters/lancer/Lancer_Right_Attack.png",
+      frameEnd: 9,
       frameWidth: 320,
       frameHeight: 320,
     },

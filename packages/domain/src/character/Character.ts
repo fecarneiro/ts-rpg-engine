@@ -57,6 +57,10 @@ export class Character implements CharacterProps {
     this.position = applyMovement(this.position, direction);
     this.direction = direction;
   }
+
+  public attack(): void {
+    console.log(`${this.id} is attacking`);
+  }
 }
 
 export function createCharacter(

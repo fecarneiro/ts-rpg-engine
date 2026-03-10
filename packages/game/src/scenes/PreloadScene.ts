@@ -24,6 +24,10 @@ export class PreloadScene extends Phaser.Scene {
         frameWidth: asset.run.frameWidth,
         frameHeight: asset.run.frameHeight,
       });
+      this.load.spritesheet(asset.attack.spritesheetKey, asset.attack.url, {
+        frameWidth: asset.attack.frameWidth,
+        frameHeight: asset.attack.frameHeight,
+      });
     }
 
     // Load UI assets

@@ -1,9 +1,9 @@
 import type { Character } from "@domain/character/Character";
 import { createCharacter } from "@domain/character/Character";
+import type { Position } from "@domain/character/position/Position";
 import type { CharacterAsset } from "@game/configs/character";
 import { CHARACTER_SCALE } from "@game/configs/constants";
 import { tileToPixel } from "@game/utils/PixelTileConverters";
-import type { Position } from "@domain/character/position/Position";
 import type Phaser from "phaser";
 
 export type CharacterBuilderResult = {
@@ -58,6 +58,18 @@ export class CharacterBuilder {
         ),
         frameRate: 12,
         repeat: -1,
+      });
+    }
+
+    if (!this.scene.anims.exists(this.asset.attack.animKey)) {
+      this.scene.anims.create({
+        key: this.asset.attack.animKey,
+        frames: this.scene.anims.generateFrameNumbers(
+          this.asset.attack.spritesheetKey,
+          { start: 0, end: this.asset.attack.frameEnd }
+        ),
+        frameRate: 12,
+        repeat: 0,
       });
     }
 
