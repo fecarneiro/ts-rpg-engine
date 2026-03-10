@@ -1,7 +1,7 @@
 import type { Character } from "@domain/character/Character";
 import type { Direction } from "@domain/character/direction/Direction";
 import { tileToPixel } from "@game/utils/coordinates";
-import type Phaser from "phaser";
+import Phaser from "phaser";
 
 type PlayerControllerParams = {
   scene: Phaser.Scene;
@@ -24,6 +24,12 @@ export class PlayerController {
   private readonly mapWidthTiles: number;
   private readonly mapHeightTiles: number;
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+  private readonly wasd: {
+    up: Phaser.Input.Keyboard.Key;
+    down: Phaser.Input.Keyboard.Key;
+    left: Phaser.Input.Keyboard.Key;
+    right: Phaser.Input.Keyboard.Key;
+  };
   private isMoving = false;
 
   public constructor(params: PlayerControllerParams) {
@@ -36,6 +42,12 @@ export class PlayerController {
     this.mapWidthTiles = params.mapWidthTiles;
     this.mapHeightTiles = params.mapHeightTiles;
     this.cursors = this.scene.input.keyboard!.createCursorKeys();
+    this.wasd = {
+      up: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+      down: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+      left: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+      right: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+    };
   }
 
   public update(): void {
@@ -66,10 +78,10 @@ export class PlayerController {
   }
 
   private readDirection(): Direction | null {
-    if (this.cursors.up.isDown) return "up";
-    if (this.cursors.down.isDown) return "down";
-    if (this.cursors.left.isDown) return "left";
-    if (this.cursors.right.isDown) return "right";
+    if (this.cursors.up.isDown || this.wasd.up.isDown) return "up";
+    if (this.cursors.down.isDown || this.wasd.down.isDown) return "down";
+    if (this.cursors.left.isDown || this.wasd.left.isDown) return "left";
+    if (this.cursors.right.isDown || this.wasd.right.isDown) return "right";
     return null;
   }
 
