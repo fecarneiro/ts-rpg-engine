@@ -32,7 +32,11 @@ export class UIScene extends Phaser.Scene {
       });
 
     this.add
-      .text(x, y, "Personagem", { fontSize: "13px", color: "#3d2b1f", fontStyle: "bold" })
+      .text(x, y, "Change Character", {
+        fontSize: "13px",
+        color: "#3d2b1f",
+        fontStyle: "bold",
+      })
       .setOrigin(0.5, 0.5);
   }
 }

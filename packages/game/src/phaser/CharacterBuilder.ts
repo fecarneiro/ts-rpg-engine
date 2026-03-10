@@ -1,7 +1,7 @@
 import type { Character } from "@domain/character/Character";
 import { createCharacter } from "@domain/character/Character";
 import type { CharacterAsset } from "@game/configs/character";
-import { CHARACTER_FRAME_END, CHARACTER_SCALE } from "@game/configs/constants";
+import { CHARACTER_SCALE } from "@game/configs/constants";
 import { tileToPixel } from "@game/utils/PixelTileConverters";
 import type Phaser from "phaser";
 
@@ -40,7 +40,7 @@ export class CharacterBuilder {
         key: this.asset.idle.animKey,
         frames: this.scene.anims.generateFrameNumbers(
           this.asset.idle.spritesheetKey,
-          { start: 0, end: CHARACTER_FRAME_END }
+          { start: 0, end: this.asset.idle.frameEnd }
         ),
         frameRate: 8,
         repeat: -1,
@@ -52,7 +52,7 @@ export class CharacterBuilder {
         key: this.asset.run.animKey,
         frames: this.scene.anims.generateFrameNumbers(
           this.asset.run.spritesheetKey,
-          { start: 0, end: CHARACTER_FRAME_END }
+          { start: 0, end: this.asset.run.frameEnd }
         ),
         frameRate: 12,
         repeat: -1,
