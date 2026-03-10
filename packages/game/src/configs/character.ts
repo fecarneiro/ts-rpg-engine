@@ -14,7 +14,7 @@ export type CharacterAsset = {
   };
 };
 
-export const characterAssets: CharacterAsset[] = [
+export const CHARACTER_ASSETS: CharacterAsset[] = [
   {
     id: "warrior",
     idle: {

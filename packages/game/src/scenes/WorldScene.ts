@@ -1,4 +1,4 @@
-import { characterAssets } from "@game/configs/character";
+import { CHARACTER_ASSETS } from "@game/configs/character";
 import { MOVE_DURATION_MS } from "@game/configs/constants";
 import { CharacterBuilder } from "@game/phaser/CharacterBuilder";
 import { MapBuilder } from "@game/phaser/MapBuilder";
@@ -15,7 +15,7 @@ export class WorldScene extends Phaser.Scene {
   public create(): void {
     const mapData = new MapBuilder(this).build();
 
-    const defaultAsset = characterAssets[0]!;
+    const defaultAsset = CHARACTER_ASSETS[0]!;
     const { character, player } = new CharacterBuilder(
       this,
       defaultAsset

@@ -1,8 +1,8 @@
-import { CHARACTER_SCALE, CHARACTER_FRAME_END } from "@game/configs/constants";
-import type { CharacterAsset } from "@game/configs/character";
-import { tileToPixel } from "@game/utils/coordinates";
-import { createCharacter } from "@domain/character/Character";
 import type { Character } from "@domain/character/Character";
+import { createCharacter } from "@domain/character/Character";
+import type { CharacterAsset } from "@game/configs/character";
+import { CHARACTER_FRAME_END, CHARACTER_SCALE } from "@game/configs/constants";
+import { tileToPixel } from "@game/utils/PixelTileConverters";
 import type Phaser from "phaser";
 
 export type CharacterBuilderResult = {
@@ -13,11 +13,17 @@ export type CharacterBuilderResult = {
 export class CharacterBuilder {
   public constructor(
     private readonly scene: Phaser.Scene,
-    private readonly asset: CharacterAsset,
+    private readonly asset: CharacterAsset
   ) {}
 
   public build(): CharacterBuilderResult {
-    const character = createCharacter("player-1", this.asset.id, { x: 0, y: 0 }, "down", 1);
+    const character = createCharacter(
+      "player-1",
+      this.asset.id,
+      { x: 0, y: 0 },
+      "down",
+      1
+    );
 
     const player = this.scene.add.sprite(
       tileToPixel(character.position.x),

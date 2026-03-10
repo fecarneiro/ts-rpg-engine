@@ -1,6 +1,6 @@
 import type { Character } from "@domain/character/Character";
 import type { Direction } from "@domain/character/direction/Direction";
-import { tileToPixel } from "@game/utils/coordinates";
+import { tileToPixel } from "@game/utils/PixelTileConverters";
 import Phaser from "phaser";
 
 type PlayerControllerParams = {
@@ -46,7 +46,9 @@ export class PlayerController {
       up: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       down: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       left: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-      right: this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+      right: this.scene.input.keyboard!.addKey(
+        Phaser.Input.Keyboard.KeyCodes.D
+      ),
     };
   }
 
@@ -100,6 +102,8 @@ export class PlayerController {
   }
 
   private isWithinBounds(x: number, y: number): boolean {
-    return x >= 0 && x < this.mapWidthTiles && y >= 0 && y < this.mapHeightTiles;
+    return (
+      x >= 0 && x < this.mapWidthTiles && y >= 0 && y < this.mapHeightTiles
+    );
   }
 }

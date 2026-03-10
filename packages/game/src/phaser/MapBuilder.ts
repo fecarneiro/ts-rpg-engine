@@ -1,4 +1,4 @@
-import { mapAssets } from "@game/configs/map";
+import { MAP_ASSETS } from "@game/configs/map";
 import { createGrid } from "@game/phaser/GridBuilder";
 import type Phaser from "phaser";
 
@@ -12,12 +12,12 @@ export class MapBuilder {
 
   public build(): MapBuilderResult {
     const map = this.scene.make.tilemap({
-      key: mapAssets.worldMap.tilemap.key,
+      key: MAP_ASSETS.worldMap.tilemap.key,
     });
 
     const tileset = map.addTilesetImage(
-      mapAssets.worldMap.tilesetName,
-      mapAssets.worldMap.tileset.key
+      MAP_ASSETS.worldMap.tilesetName,
+      MAP_ASSETS.worldMap.tileset.key
     );
 
     if (!tileset) {
