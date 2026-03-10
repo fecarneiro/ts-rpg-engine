@@ -1,5 +1,5 @@
 import { CHARACTER_SCALE, CHARACTER_FRAME_END } from "@game/configs/constants";
-import { characterAssets } from "@game/configs/character";
+import type { CharacterAsset } from "@game/configs/character";
 import { tileToPixel } from "@game/utils/coordinates";
 import { createCharacter } from "@domain/character/Character";
 import type { Character } from "@domain/character/Character";
@@ -11,42 +11,49 @@ export type CharacterBuilderResult = {
 };
 
 export class CharacterBuilder {
-  public constructor(private readonly scene: Phaser.Scene) {}
+  public constructor(
+    private readonly scene: Phaser.Scene,
+    private readonly asset: CharacterAsset,
+  ) {}
 
   public build(): CharacterBuilderResult {
-    const character = createCharacter("player-1", "warrior", { x: 0, y: 0 }, "down", 1);
+    const character = createCharacter("player-1", this.asset.id, { x: 0, y: 0 }, "down", 1);
 
     const player = this.scene.add.sprite(
       tileToPixel(character.position.x),
       tileToPixel(character.position.y),
-      characterAssets.warrior.idle.spritesheetKey,
+      this.asset.idle.spritesheetKey,
       0
     );
 
     player.setScale(CHARACTER_SCALE);
     player.setDepth(1);
 
-    this.scene.anims.create({
-      key: characterAssets.warrior.idle.animKey,
-      frames: this.scene.anims.generateFrameNumbers(
-        characterAssets.warrior.idle.spritesheetKey,
-        { start: 0, end: CHARACTER_FRAME_END }
-      ),
-      frameRate: 8,
-      repeat: -1,
-    });
+    if (!this.scene.anims.exists(this.asset.idle.animKey)) {
+      this.scene.anims.create({
+        key: this.asset.idle.animKey,
+        frames: this.scene.anims.generateFrameNumbers(
+          this.asset.idle.spritesheetKey,
+          { start: 0, end: CHARACTER_FRAME_END }
+        ),
+        frameRate: 8,
+        repeat: -1,
+      });
+    }
 
-    this.scene.anims.create({
-      key: characterAssets.warrior.run.animKey,
-      frames: this.scene.anims.generateFrameNumbers(
-        characterAssets.warrior.run.spritesheetKey,
-        { start: 0, end: CHARACTER_FRAME_END }
-      ),
-      frameRate: 12,
-      repeat: -1,
-    });
+    if (!this.scene.anims.exists(this.asset.run.animKey)) {
+      this.scene.anims.create({
+        key: this.asset.run.animKey,
+        frames: this.scene.anims.generateFrameNumbers(
+          this.asset.run.spritesheetKey,
+          { start: 0, end: CHARACTER_FRAME_END }
+        ),
+        frameRate: 12,
+        repeat: -1,
+      });
+    }
 
-    player.play(characterAssets.warrior.idle.animKey);
+    player.play(this.asset.idle.animKey);
 
     return { character, player };
   }

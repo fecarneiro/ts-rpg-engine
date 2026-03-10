@@ -1,5 +1,22 @@
-export const characterAssets = {
-  warrior: {
+import type { Archetype } from "@domain/character/archetypes/Archetypes";
+
+export type CharacterAsset = {
+  id: Archetype;
+  idle: {
+    spritesheetKey: string;
+    animKey: string;
+    url: string;
+  };
+  run: {
+    spritesheetKey: string;
+    animKey: string;
+    url: string;
+  };
+};
+
+export const characterAssets: CharacterAsset[] = [
+  {
+    id: "warrior",
     idle: {
       spritesheetKey: "spritesheet_warrior_idle",
       animKey: "warrior_idle",
@@ -11,4 +28,4 @@ export const characterAssets = {
       url: "/assets/characters/warrior/Warrior_Run.png",
     },
   },
-} as const;
+];

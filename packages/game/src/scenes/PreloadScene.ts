@@ -13,21 +13,10 @@ export class PreloadScene extends Phaser.Scene {
     this.load.tilemapTiledJSON(worldMap.tilemap.key, worldMap.tilemap.url);
     this.load.image(worldMap.tileset.key, worldMap.tileset.url);
 
-    const warrior = characterAssets.warrior;
-
-    const characterFrameConfig = CHARACTER_FRAME_CONFIG;
-
-    this.load.spritesheet(
-      warrior.idle.spritesheetKey,
-      warrior.idle.url,
-      characterFrameConfig
-    );
-
-    this.load.spritesheet(
-      warrior.run.spritesheetKey,
-      warrior.run.url,
-      characterFrameConfig
-    );
+    for (const asset of characterAssets) {
+      this.load.spritesheet(asset.idle.spritesheetKey, asset.idle.url, CHARACTER_FRAME_CONFIG);
+      this.load.spritesheet(asset.run.spritesheetKey, asset.run.url, CHARACTER_FRAME_CONFIG);
+    }
   }
 
   public create(): void {
