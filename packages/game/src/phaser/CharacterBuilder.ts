@@ -3,6 +3,7 @@ import { createCharacter } from "@domain/character/Character";
 import type { CharacterAsset } from "@game/configs/character";
 import { CHARACTER_SCALE } from "@game/configs/constants";
 import { tileToPixel } from "@game/utils/PixelTileConverters";
+import type { Position } from "@domain/character/position/Position";
 import type Phaser from "phaser";
 
 export type CharacterBuilderResult = {
@@ -13,14 +14,15 @@ export type CharacterBuilderResult = {
 export class CharacterBuilder {
   public constructor(
     private readonly scene: Phaser.Scene,
-    private readonly asset: CharacterAsset
+    private readonly asset: CharacterAsset,
+    private readonly initialPosition: Position = { x: 0, y: 0 }
   ) {}
 
   public build(): CharacterBuilderResult {
     const character = createCharacter(
       "player-1",
       this.asset.id,
-      { x: 0, y: 0 },
+      this.initialPosition,
       "down",
       1
     );

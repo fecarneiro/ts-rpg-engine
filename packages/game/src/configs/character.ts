@@ -5,6 +5,8 @@ export type AnimationAsset = {
   animKey: string;
   url: string;
   frameEnd: number;
+  frameWidth: number;
+  frameHeight: number;
 };
 
 export type CharacterAsset = {
@@ -21,12 +23,16 @@ export const CHARACTER_ASSETS: CharacterAsset[] = [
       animKey: "warrior_idle",
       url: "/assets/characters/warrior/Warrior_Idle.png",
       frameEnd: 7,
+      frameWidth: 192,
+      frameHeight: 192,
     },
     run: {
       spritesheetKey: "spritesheet_warrior_run",
       animKey: "warrior_run",
       url: "/assets/characters/warrior/Warrior_Run.png",
       frameEnd: 5,
+      frameWidth: 192,
+      frameHeight: 192,
     },
   },
   {
@@ -36,12 +42,16 @@ export const CHARACTER_ASSETS: CharacterAsset[] = [
       animKey: "lancer_idle",
       url: "/assets/characters/lancer/Lancer_Idle.png",
       frameEnd: 9,
+      frameWidth: 320,
+      frameHeight: 320,
     },
     run: {
       spritesheetKey: "spritesheet_lancer_run",
       animKey: "lancer_run",
       url: "/assets/characters/lancer/Lancer_Run.png",
       frameEnd: 5,
+      frameWidth: 320,
+      frameHeight: 320,
     },
   },
 ];
