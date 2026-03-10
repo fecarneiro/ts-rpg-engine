@@ -1,4 +1,5 @@
 import { PreloadScene } from "@game/scenes/PreloadScene";
+import { UIScene } from "@game/scenes/UIScene";
 import { WorldScene } from "@game/scenes/WorldScene";
 import Phaser from "phaser";
 
@@ -15,7 +16,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     default: "arcade",
   },
   // TODO: see more options
-  scene: [PreloadScene, WorldScene],
+  scene: [PreloadScene, WorldScene, UIScene],
 };
 
 new Phaser.Game(gameConfig);
