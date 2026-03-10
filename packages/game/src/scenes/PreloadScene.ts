@@ -1,7 +1,5 @@
-import {
-  CHARACTER_FRAME_CONFIG,
-  characterAssets,
-} from "@game/configs/character";
+import { CHARACTER_FRAME_CONFIG } from "@game/configs/constants";
+import { characterAssets } from "@game/configs/character";
 import { mapAssets } from "@game/configs/map";
 import Phaser from "phaser";
 

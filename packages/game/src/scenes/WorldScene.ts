@@ -1,38 +1,36 @@
-import { MapBuilder } from "@game/phaser/MapBuilder";
+import { MOVE_DURATION_MS } from "@game/configs/constants";
+import { characterAssets } from "@game/configs/character";
 import { CharacterBuilder } from "@game/phaser/CharacterBuilder";
+import { MapBuilder } from "@game/phaser/MapBuilder";
+import { PlayerController } from "@game/phaser/PlayerController";
 import Phaser from "phaser";
 
 export class WorldScene extends Phaser.Scene {
-  private player!: Phaser.GameObjects.Sprite;
-  // TODO Fase 2: private character!: Character;
-  // TODO Fase 2: private playerController!: PlayerController;
+  private playerController!: PlayerController;
 
   public constructor() {
     super("WorldScene");
   }
 
   public create(): void {
-    new MapBuilder(this).build();
+    const mapData = new MapBuilder(this).build();
+    const { character, player } = new CharacterBuilder(this).build();
 
-    const { player } = new CharacterBuilder(this).build();
-    this.player = player;
+    this.playerController = new PlayerController({
+      scene: this,
+      character,
+      player,
+      moveDurationMs: MOVE_DURATION_MS,
+      idleAnimKey: characterAssets.warrior.idle.animKey,
+      runAnimKey: characterAssets.warrior.run.animKey,
+      mapWidthTiles: mapData.widthTiles,
+      mapHeightTiles: mapData.heightTiles,
+    });
 
-    // TODO Fase 2: guardar character e criar PlayerController com:
-    // new PlayerController({
-    //   scene: this,
-    //   character,
-    //   player: this.player,
-    //   moveDurationMs: MOVE_DURATION_MS,
-    //   idleAnimKey: characterAssets.warrior.idle.animKey,
-    //   runAnimKey: characterAssets.warrior.run.animKey,
-    //   mapWidthTiles: mapData.widthTiles,
-    //   mapHeightTiles: mapData.heightTiles,
-    // });
-
-    this.cameras.main.startFollow(this.player, true);
+    this.cameras.main.startFollow(player, true);
   }
 
   public update(): void {
-    // TODO Fase 2: this.playerController.update();
+    this.playerController.update();
   }
 }

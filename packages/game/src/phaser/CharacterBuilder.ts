@@ -1,9 +1,6 @@
-import {
-  characterAssets,
-  CHARACTER_SCALE,
-  CHARACTER_FRAME_END,
-} from "@game/configs/character";
-import { tileToPixel } from "@game/configs/map";
+import { CHARACTER_SCALE, CHARACTER_FRAME_END } from "@game/configs/constants";
+import { characterAssets } from "@game/configs/character";
+import { tileToPixel } from "@game/utils/coordinates";
 import { createCharacter } from "@domain/character/Character";
 import type { Character } from "@domain/character/Character";
 import type Phaser from "phaser";

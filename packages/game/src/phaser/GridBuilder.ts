@@ -1,7 +1,7 @@
-import { TILE_SIZE } from "@game/configs/map";
+import { TILE_SIZE } from "@game/configs/constants";
 import type Phaser from "phaser";
 
-/** Draws debug grid using TILE_SIZE. Receives scene explicitly — pure function, no `this`. */
+/** Draws a debug grid over the map. Pure function — no `this`, fully testable. */
 export function createGrid(
   scene: Phaser.Scene,
   widthInPixels: number,

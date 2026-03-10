@@ -1,5 +1,3 @@
-export const TILE_SIZE = 64;
-
 /**
  * TMJ (Tiled Map JSON): Layout blueprint — tile positions, colliders, layers. Defines which tile goes where via tile IDs.
  * PNG: Visual tileset — sprite sheet with the actual pixel art for each tile.The TMJ references this image and maps tile IDs to regions within it.
@@ -17,7 +15,3 @@ export const mapAssets = {
     },
   },
 } as const;
-
-export function tileToPixel(tile: number): number {
-  return tile * TILE_SIZE + TILE_SIZE / 2;
-}

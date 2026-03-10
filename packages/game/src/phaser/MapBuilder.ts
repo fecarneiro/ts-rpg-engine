@@ -1,4 +1,5 @@
-import { TILE_SIZE, mapAssets } from "@game/configs/map";
+import { mapAssets } from "@game/configs/map";
+import { createGrid } from "@game/phaser/GridBuilder";
 import type Phaser from "phaser";
 
 /** Return type with map dimensions in tiles for bounds validation */
@@ -45,29 +46,12 @@ export class MapBuilder {
       map.heightInPixels
     );
 
-    this.createGrid(map.widthInPixels, map.heightInPixels);
+    createGrid(this.scene, map.widthInPixels, map.heightInPixels);
 
     // Dimensions for PlayerController bounds
     return {
       widthTiles: map.width,
       heightTiles: map.height,
     };
-  }
-  /** Draws debug grid using TILE_SIZE */
-  private createGrid(widthInPixels: number, heightInPixels: number): void {
-    const grid = this.scene.add.grid(
-      0,
-      0,
-      widthInPixels,
-      heightInPixels,
-      TILE_SIZE,
-      TILE_SIZE,
-      0,
-      0
-    );
-
-    grid.setOrigin(0, 0);
-    grid.setOutlineStyle(0xffffff, 0.25);
-    grid.setDepth(0.5);
   }
 }
