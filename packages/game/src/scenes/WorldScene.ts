@@ -22,6 +22,12 @@ export class WorldScene extends Phaser.Scene {
     this.mapData = new MapBuilder(this).build();
     this.spawnCharacter(CHARACTER_ASSETS[0]!);
     this.cameras.main.startFollow(this.player, true);
+
+    this.events.on("character:change", (id: Archetype) =>
+      this.swapCharacter(id)
+    );
+
+    this.scene.launch("UIScene");
   }
 
   public update(): void {
