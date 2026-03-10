@@ -106,4 +106,15 @@ export class PlayerController {
       x >= 0 && x < this.mapWidthTiles && y >= 0 && y < this.mapHeightTiles
     );
   }
+
+  public destroy(): void {
+    this.scene.input.keyboard!.removeKey(this.cursors.up);
+    this.scene.input.keyboard!.removeKey(this.cursors.down);
+    this.scene.input.keyboard!.removeKey(this.cursors.left);
+    this.scene.input.keyboard!.removeKey(this.cursors.right);
+    this.scene.input.keyboard!.removeKey(this.wasd.up);
+    this.scene.input.keyboard!.removeKey(this.wasd.down);
+    this.scene.input.keyboard!.removeKey(this.wasd.left);
+    this.scene.input.keyboard!.removeKey(this.wasd.right);
+  }
 }

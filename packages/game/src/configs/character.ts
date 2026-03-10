@@ -28,4 +28,17 @@ export const CHARACTER_ASSETS: CharacterAsset[] = [
       url: "/assets/characters/warrior/Warrior_Run.png",
     },
   },
+  {
+    id: "lancer",
+    idle: {
+      spritesheetKey: "spritesheet_lancer_idle",
+      animKey: "lancer_idle",
+      url: "/assets/characters/lancer/Lancer_Idle.png",
+    },
+    run: {
+      spritesheetKey: "spritesheet_lancer_run",
+      animKey: "lancer_run",
+      url: "/assets/characters/lancer/Lancer_Run.png",
+    },
+  },
 ];
