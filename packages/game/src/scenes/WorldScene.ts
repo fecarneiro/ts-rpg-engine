@@ -55,6 +55,7 @@ export class WorldScene extends Phaser.Scene {
       moveDurationMs: MOVE_DURATION_MS,
       idleAnimKey: asset.idle.animKey,
       runAnimKey: asset.run.animKey,
+      attackAnimKey: asset.attack.animKey,
       mapWidthTiles: this.mapData.widthTiles,
       mapHeightTiles: this.mapData.heightTiles,
     });

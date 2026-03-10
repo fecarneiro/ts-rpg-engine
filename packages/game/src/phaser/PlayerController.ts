@@ -1,5 +1,6 @@
 import type { Character } from "@domain/character/Character";
 import type { Direction } from "@domain/character/direction/Direction";
+import { applyMovement } from "@domain/character/movement/Movement";
 import { tileToPixel } from "@game/utils/PixelTileConverters";
 import Phaser from "phaser";
 
@@ -10,6 +11,7 @@ type PlayerControllerParams = {
   moveDurationMs: number;
   idleAnimKey: string;
   runAnimKey: string;
+  attackAnimKey: string;
   mapWidthTiles: number;
   mapHeightTiles: number;
 };
@@ -21,6 +23,7 @@ export class PlayerController {
   private readonly moveDurationMs: number;
   private readonly idleAnimKey: string;
   private readonly runAnimKey: string;
+  private readonly attackAnimKey: string;
   private readonly mapWidthTiles: number;
   private readonly mapHeightTiles: number;
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -30,7 +33,9 @@ export class PlayerController {
     left: Phaser.Input.Keyboard.Key;
     right: Phaser.Input.Keyboard.Key;
   };
+  private readonly attackKey: Phaser.Input.Keyboard.Key;
   private isMoving = false;
+  private isAttacking = false;
 
   public constructor(params: PlayerControllerParams) {
     this.scene = params.scene;
@@ -39,6 +44,7 @@ export class PlayerController {
     this.moveDurationMs = params.moveDurationMs;
     this.idleAnimKey = params.idleAnimKey;
     this.runAnimKey = params.runAnimKey;
+    this.attackAnimKey = params.attackAnimKey;
     this.mapWidthTiles = params.mapWidthTiles;
     this.mapHeightTiles = params.mapHeightTiles;
     this.cursors = this.scene.input.keyboard!.createCursorKeys();
@@ -50,9 +56,19 @@ export class PlayerController {
         Phaser.Input.Keyboard.KeyCodes.D
       ),
     };
+    this.attackKey = this.scene.input.keyboard!.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
   }
 
   public update(): void {
+    if (this.isAttacking) return;
+
+    if (Phaser.Input.Keyboard.JustDown(this.attackKey)) {
+      this.startAttack();
+      return;
+    }
+
     if (this.isMoving) return;
 
     const direction = this.readDirection();
@@ -73,9 +89,24 @@ export class PlayerController {
       duration: this.moveDurationMs,
       ease: "Linear",
       onComplete: () => {
-        this.player.play(this.idleAnimKey);
+        if (!this.isAttacking) {
+          this.player.play(this.idleAnimKey);
+        }
         this.isMoving = false;
       },
+    });
+  }
+
+  private startAttack(): void {
+    this.isAttacking = true;
+    this.character.attack();
+    this.player.play(this.attackAnimKey);
+
+    this.player.once("animationcomplete", (anim: Phaser.Animations.Animation) => {
+      if (anim.key === this.attackAnimKey) {
+        this.isAttacking = false;
+        this.player.play(this.idleAnimKey);
+      }
     });
   }
 
@@ -88,17 +119,7 @@ export class PlayerController {
   }
 
   private nextPosition(direction: Direction): { x: number; y: number } {
-    const offsets: Record<Direction, { x: number; y: number }> = {
-      up: { x: 0, y: -1 },
-      down: { x: 0, y: 1 },
-      left: { x: -1, y: 0 },
-      right: { x: 1, y: 0 },
-    };
-    const offset = offsets[direction];
-    return {
-      x: this.character.position.x + offset.x,
-      y: this.character.position.y + offset.y,
-    };
+    return applyMovement(this.character.position, direction);
   }
 
   private isWithinBounds(x: number, y: number): boolean {
@@ -109,15 +130,18 @@ export class PlayerController {
 
   public destroy(): void {
     this.scene.tweens.killTweensOf(this.player);
+    this.player.off("animationcomplete");
     this.isMoving = false;
+    this.isAttacking = false;
 
-    this.cursors.up.destroy();
-    this.cursors.down.destroy();
-    this.cursors.left.destroy();
-    this.cursors.right.destroy();
-    this.wasd.up.destroy();
-    this.wasd.down.destroy();
-    this.wasd.left.destroy();
-    this.wasd.right.destroy();
+    this.scene.input.keyboard!.removeKey(this.cursors.up);
+    this.scene.input.keyboard!.removeKey(this.cursors.down);
+    this.scene.input.keyboard!.removeKey(this.cursors.left);
+    this.scene.input.keyboard!.removeKey(this.cursors.right);
+    this.scene.input.keyboard!.removeKey(this.wasd.up);
+    this.scene.input.keyboard!.removeKey(this.wasd.down);
+    this.scene.input.keyboard!.removeKey(this.wasd.left);
+    this.scene.input.keyboard!.removeKey(this.wasd.right);
+    this.scene.input.keyboard!.removeKey(this.attackKey);
   }
 }
